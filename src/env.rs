@@ -39,6 +39,12 @@ impl Env {
             if is_exe(m.mode()) {
                 return Some(path_buf)
             }
+        }
+
+        let mut cwd = self.cwd.to_owned();
+        cwd.push(path);
+        if cwd.metadata().map_or(false, |m| is_exe(m.mode())) {
+            return Some(cwd)
         } None
     }
 
